@@ -4,6 +4,7 @@ Specialized Codex agents for planning, implementing, testing, and documenting Gn
 
 ## Agents
 
+- gnym_roadmapper explores feature ideas, relationships, and sequencing, then shapes selected ideas into planner-sized candidates.
 - gnym_planner turns developer intent and repository evidence into an approved feature contract composed of the smallest coherent tasks.
 - gnym_coder implements assigned tasks using idiomatic Go and the approved Gnym architecture.
 - gnym_tester independently verifies acceptance criteria and adds credible Go test evidence.
