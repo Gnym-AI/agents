@@ -25,4 +25,16 @@ This repository owns agent definitions and workflow documentation. It does not o
 
 ## Installation
 
-The agent definitions are intended to be installed in the local Codex agents directory. Installation automation will be added only when its behavior and overwrite policy are defined.
+Install the definitions into the local Codex agents directory:
+
+    ./scripts/install.sh
+
+Preview the operation without writing:
+
+    ./scripts/install.sh --dry-run
+
+The installer validates every Gnym TOML file. It installs missing definitions, leaves identical copies unchanged, and refuses to overwrite a different installed copy. After reviewing an intentional difference, use:
+
+    ./scripts/install.sh --force
+
+The installer uses standard shell tools and has no third-party dependencies. Codex may require a new task before newly installed roles appear in its available-agent list.
