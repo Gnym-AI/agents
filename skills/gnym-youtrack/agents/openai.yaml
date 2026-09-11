@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gnym YouTrack"
+  short_description: "Manage Gnym roadmap and delivery issues safely"
+  default_prompt: "Use $gnym-youtrack to read or update the Gnym YouTrack workflow."
