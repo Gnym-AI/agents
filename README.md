@@ -12,6 +12,10 @@ Specialized Codex agents for planning, implementing, testing, and documenting Gn
 
 The primary Codex task remains the orchestrator and the only role that communicates directly with the developer.
 
+## Shared skill
+
+`gnym-youtrack` gives every role the same policy for reading and updating Gnym's YouTrack roadmap and delivery issues. It defines the Epic, Story, and Task boundary; role-owned state transitions; mutation safeguards; and evidence-based handoff comments. The configured YouTrack MCP integration supplies access; the skill supplies workflow behavior.
+
 ## Workflow
 
 See [workflow/orchestration.md](workflow/orchestration.md) for responsibilities, handoffs, revision rules, and completion behavior.
@@ -34,7 +38,7 @@ Preview the operation without writing:
 
     ./scripts/install.sh --dry-run
 
-The installer validates every Gnym TOML file. It installs missing definitions, leaves identical copies unchanged, and refuses to overwrite a different installed copy. After reviewing an intentional difference, use:
+The installer validates and installs both the Gnym agent TOML files and the shared YouTrack skill. It installs missing definitions, leaves identical copies unchanged, and refuses to overwrite a different installed copy. After reviewing an intentional difference, use:
 
     ./scripts/install.sh --force
 

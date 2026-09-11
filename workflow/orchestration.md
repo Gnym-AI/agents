@@ -18,6 +18,19 @@ The primary Codex task acts as orchestrator. It controls developer communication
 
 The roadmapper is optional when the developer already presents one bounded feature.
 
+## YouTrack progression
+
+All roles use the shared `gnym-youtrack` skill for issue operations. The configured project may use different state names; the skill defines the semantic mapping and safe mutation rules.
+
+- The roadmapper owns Epics and candidate Stories, then hands selected work to planning.
+- The planner advances the Story through planning and approval, then creates delivery Tasks only from a developer-approved, versioned feature plan.
+- The coder advances its implementation Task from active work to an evidence-backed handoff.
+- The tester independently records verification and advances verified work toward documentation.
+- The documenter records canonical documentation changes and advances work to final review.
+- The orchestrator resolves loops and performs final Story closure.
+
+Each agent pushes status only across its own boundary. No specialist declares the next specialist's work complete.
+
 ## Feedback loops
 
 - An implementation defect found by the tester returns to the coder.

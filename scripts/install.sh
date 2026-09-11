@@ -4,10 +4,12 @@ set -euo pipefail
 
 force=false
 dry_run=false
-target="${CODEX_HOME:-$HOME/.codex}/agents"
+codex_dir="${CODEX_HOME:-$HOME/.codex}"
+target="$codex_dir/agents"
+skills_target="$codex_dir/skills"
 
 usage() {
-    echo "Usage: scripts/install.sh [--dry-run] [--force] [--target DIRECTORY]"
+    echo "Usage: scripts/install.sh [--dry-run] [--force] [--target DIRECTORY] [--skills-target DIRECTORY]"
 }
 
 while (( $# > 0 )); do
@@ -28,6 +30,14 @@ while (( $# > 0 )); do
             target="$2"
             shift 2
             ;;
+        --skills-target)
+            if (( $# < 2 )); then
+                echo "--skills-target requires a directory" >&2
+                exit 1
+            fi
+            skills_target="$2"
+            shift 2
+            ;;
         --help|-h)
             usage
             exit 0
@@ -43,9 +53,18 @@ done
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 repository_dir="$(cd -- "$script_dir/.." && pwd)"
 source_dir="$repository_dir/agents"
+skill_source="$repository_dir/skills/gnym-youtrack"
 
 if [[ -z "$target" || "$target" == "/" ]]; then
     echo "Refusing unsafe target directory: $target" >&2
+    exit 1
+fi
+if [[ -z "$skills_target" || "$skills_target" == "/" ]]; then
+    echo "Refusing unsafe skills target directory: $skills_target" >&2
+    exit 1
+fi
+if [[ ! -f "$skill_source/SKILL.md" ]]; then
+    echo "Gnym YouTrack skill not found in $skill_source" >&2
     exit 1
 fi
 
@@ -92,6 +111,11 @@ for source in "${sources[@]}"; do
     fi
 done
 
+skill_destination="$skills_target/gnym-youtrack"
+if [[ -e "$skill_destination" ]] && ! diff -qr "$skill_source" "$skill_destination" >/dev/null && [[ "$force" != true ]]; then
+    conflicts+=("$skill_destination")
+fi
+
 if (( ${#conflicts[@]} > 0 )); then
     for destination in "${conflicts[@]}"; do
         echo "Refusing to overwrite changed file: $destination" >&2
@@ -102,6 +126,7 @@ fi
 
 if [[ "$dry_run" != true ]]; then
     mkdir -p -- "$target"
+    mkdir -p -- "$skills_target"
 fi
 
 for source in "${sources[@]}"; do
@@ -123,7 +148,34 @@ for source in "${sources[@]}"; do
     fi
 done
 
+if [[ -d "$skill_destination" ]] && diff -qr "$skill_source" "$skill_destination" >/dev/null; then
+    echo "unchanged $skill_destination"
+elif [[ "$dry_run" == true ]]; then
+    if [[ -e "$skill_destination" ]]; then
+        echo "would replace $skill_destination"
+    else
+        echo "would install $skill_destination"
+    fi
+else
+    temporary_skill="$(mktemp -d "$skills_target/.gnym-youtrack.XXXXXX")"
+    cp -R "$skill_source/." "$temporary_skill/"
+    if [[ -e "$skill_destination" ]]; then
+        backup_skill="$(mktemp -d "$skills_target/.gnym-youtrack-backup.XXXXXX")"
+        rmdir "$backup_skill"
+        mv -- "$skill_destination" "$backup_skill"
+        if ! mv -- "$temporary_skill" "$skill_destination"; then
+            mv -- "$backup_skill" "$skill_destination"
+            exit 1
+        fi
+        rm -rf -- "$backup_skill"
+    else
+        mv -- "$temporary_skill" "$skill_destination"
+    fi
+    echo "installed $skill_destination"
+fi
+
 echo "Validated ${#sources[@]} Gnym agent definitions."
+echo "Validated the Gnym YouTrack skill."
 if [[ "$dry_run" == true ]]; then
     echo "Dry run complete; no files were written."
 else
