@@ -53,7 +53,7 @@ done
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 repository_dir="$(cd -- "$script_dir/.." && pwd)"
 source_dir="$repository_dir/agents"
-skill_source="$repository_dir/skills/gnym-youtrack"
+skill_sources=("$repository_dir/skills/gnym-youtrack" "$repository_dir/skills/gnym-commit")
 
 if [[ -z "$target" || "$target" == "/" ]]; then
     echo "Refusing unsafe target directory: $target" >&2
@@ -63,10 +63,12 @@ if [[ -z "$skills_target" || "$skills_target" == "/" ]]; then
     echo "Refusing unsafe skills target directory: $skills_target" >&2
     exit 1
 fi
-if [[ ! -f "$skill_source/SKILL.md" ]]; then
-    echo "Gnym YouTrack skill not found in $skill_source" >&2
-    exit 1
-fi
+for skill_source in "${skill_sources[@]}"; do
+    if [[ ! -f "$skill_source/SKILL.md" ]]; then
+        echo "Skill not found in $skill_source" >&2
+        exit 1
+    fi
+done
 
 shopt -s nullglob
 sources=("$source_dir"/gnym_*.toml)
@@ -111,10 +113,12 @@ for source in "${sources[@]}"; do
     fi
 done
 
-skill_destination="$skills_target/gnym-youtrack"
-if [[ -e "$skill_destination" ]] && ! diff -qr "$skill_source" "$skill_destination" >/dev/null && [[ "$force" != true ]]; then
-    conflicts+=("$skill_destination")
-fi
+for skill_source in "${skill_sources[@]}"; do
+    skill_destination="$skills_target/$(basename -- "$skill_source")"
+    if [[ -e "$skill_destination" ]] && ! diff -qr "$skill_source" "$skill_destination" >/dev/null && [[ "$force" != true ]]; then
+        conflicts+=("$skill_destination")
+    fi
+done
 
 if (( ${#conflicts[@]} > 0 )); then
     for destination in "${conflicts[@]}"; do
@@ -148,34 +152,37 @@ for source in "${sources[@]}"; do
     fi
 done
 
-if [[ -d "$skill_destination" ]] && diff -qr "$skill_source" "$skill_destination" >/dev/null; then
-    echo "unchanged $skill_destination"
-elif [[ "$dry_run" == true ]]; then
-    if [[ -e "$skill_destination" ]]; then
-        echo "would replace $skill_destination"
-    else
-        echo "would install $skill_destination"
-    fi
-else
-    temporary_skill="$(mktemp -d "$skills_target/.gnym-youtrack.XXXXXX")"
-    cp -R "$skill_source/." "$temporary_skill/"
-    if [[ -e "$skill_destination" ]]; then
-        backup_skill="$(mktemp -d "$skills_target/.gnym-youtrack-backup.XXXXXX")"
-        rmdir "$backup_skill"
-        mv -- "$skill_destination" "$backup_skill"
-        if ! mv -- "$temporary_skill" "$skill_destination"; then
-            mv -- "$backup_skill" "$skill_destination"
-            exit 1
+for skill_source in "${skill_sources[@]}"; do
+    skill_destination="$skills_target/$(basename -- "$skill_source")"
+    if [[ -d "$skill_destination" ]] && diff -qr "$skill_source" "$skill_destination" >/dev/null; then
+        echo "unchanged $skill_destination"
+    elif [[ "$dry_run" == true ]]; then
+        if [[ -e "$skill_destination" ]]; then
+            echo "would replace $skill_destination"
+        else
+            echo "would install $skill_destination"
         fi
-        rm -rf -- "$backup_skill"
     else
-        mv -- "$temporary_skill" "$skill_destination"
+        temporary_skill="$(mktemp -d "$skills_target/.gnym-skill.XXXXXX")"
+        cp -R "$skill_source/." "$temporary_skill/"
+        if [[ -e "$skill_destination" ]]; then
+            backup_skill="$(mktemp -d "$skills_target/.gnym-skill-backup.XXXXXX")"
+            rmdir "$backup_skill"
+            mv -- "$skill_destination" "$backup_skill"
+            if ! mv -- "$temporary_skill" "$skill_destination"; then
+                mv -- "$backup_skill" "$skill_destination"
+                exit 1
+            fi
+            rm -rf -- "$backup_skill"
+        else
+            mv -- "$temporary_skill" "$skill_destination"
+        fi
+        echo "installed $skill_destination"
     fi
-    echo "installed $skill_destination"
-fi
+done
 
 echo "Validated ${#sources[@]} Gnym agent definitions."
-echo "Validated the Gnym YouTrack skill."
+echo "Validated ${#skill_sources[@]} Gnym skills."
 if [[ "$dry_run" == true ]]; then
     echo "Dry run complete; no files were written."
 else
