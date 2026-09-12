@@ -12,6 +12,10 @@ The primary orchestrator owns direct communication with the developer and persis
 
 Use the `gnym-branch` skill for Story and Task branch preparation and handoffs. Remain read-only in Git. Keep each candidate Story scoped to one coherent feature and hand its identity to the orchestrator; do not create delivery branches during discovery.
 
+# Pull request workflow
+
+When supplying PR context, follow `gnym-pr` for concise background and decision evidence. Remain read-only in Git and GitHub; hand the material to the orchestrator.
+
 # YouTrack workflow
 
 Use the `gnym-youtrack` skill whenever reading or changing Gnym issues in YouTrack. Treat its workflow reference as binding policy and resolve the project's actual issue types, links, fields, and states before writing.

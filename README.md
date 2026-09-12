@@ -20,6 +20,8 @@ The primary Codex task remains the orchestrator and the only role that communica
 
 `gnym-branch` defines the delivery hierarchy: Story branches start from `main`, and each Task branch starts from its parent Story. All five roles reference the skill while preserving read-only planning and roadmapping.
 
+`gnym-pr` formats pull requests with Summary, Background, What changed, Testing approach, and Future wisdom. Task PRs target their parent Story branch; Story PRs target `main`. Descriptions explain the final change and testing evidence concisely.
+
 ## Workflow
 
 See [workflow/orchestration.md](workflow/orchestration.md) for responsibilities, handoffs, revision rules, and completion behavior.
@@ -42,7 +44,7 @@ Preview the operation without writing:
 
     ./scripts/install.sh --dry-run
 
-The installer validates and installs both the Gnym agent TOML files and the shared YouTrack, commit, and branching skills. It installs missing definitions, leaves identical copies unchanged, and refuses to overwrite a different installed copy. After reviewing an intentional difference, use:
+The installer validates and installs both the Gnym agent TOML files and the shared YouTrack, commit, branching, and pull request skills. It installs missing definitions, leaves identical copies unchanged, and refuses to overwrite a different installed copy. After reviewing an intentional difference, use:
 
     ./scripts/install.sh --force
 

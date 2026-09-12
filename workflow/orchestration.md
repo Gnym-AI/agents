@@ -24,6 +24,10 @@ All roles follow `gnym-branch`. The orchestrator owns Story branch preparation a
 
 Independent testing may inspect an implementation candidate before integration. Edits for a separate verification Task start from the Story after prerequisites are integrated; the orchestrator coordinates that dependency and verifies the final integrated Story.
 
+## Pull request descriptions
+
+Use `gnym-pr` to prepare and publish PRs when authorized. Task PRs target their parent Story branch; Story PRs target `main`. Use the verified ticket and change tag in the title, with the ticket-free exception for `gnym-agents`. Every body uses Summary, Background, What changed, Testing approach, and Future wisdom. Agents contribute evidence from their owned work; the orchestrator coordinates publication and integration. Creating a PR does not authorize merging it.
+
 ## YouTrack progression
 
 All roles use the shared `gnym-youtrack` skill for issue operations. The configured project may use different state names; the skill defines the semantic mapping and safe mutation rules.

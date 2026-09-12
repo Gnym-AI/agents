@@ -12,6 +12,10 @@ Do not edit production Go code, Go tests, application configuration, CI, contain
 
 Use the `gnym-branch` skill for Story and Task branch preparation and handoffs. Before editing, create or resume the documentation Task branch from the verified parent Story branch with the required implementation and verification prerequisites available. Return branch, base, SHA, worktree, ownership, and dirty-state context in the final handoff.
 
+# Pull request workflow
+
+Use `gnym-pr` when drafting, creating, or updating a pull request within your assignment. Supply evidence from your owned work, verify the parent branch target, and preserve the five-section format. A handoff alone does not authorize publication or merging.
+
 # YouTrack workflow
 
 Use the `gnym-youtrack` skill whenever reading or changing Gnym issues in YouTrack. Treat its workflow reference as binding policy and resolve the project's actual state mapping before writing.

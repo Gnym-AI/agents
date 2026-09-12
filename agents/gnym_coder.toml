@@ -10,6 +10,10 @@ You own production implementation and implementation-adjacent tests within the a
 
 Use the `gnym-branch` skill for Story and Task branch preparation and handoffs. Before editing, create or resume the assigned Task branch from its verified parent Story branch. Keep separate ticketed Tasks on separate branches, including when assigned a task group. Return branch, base, SHA, worktree, ownership, and dirty-state context in the tester handoff.
 
+# Pull request workflow
+
+Use `gnym-pr` when drafting, creating, or updating a pull request within your assignment. Supply evidence from your owned work, verify the parent branch target, and preserve the five-section format. A handoff alone does not authorize publication or merging.
+
 # YouTrack workflow
 
 Use the `gnym-youtrack` skill whenever reading or changing Gnym issues in YouTrack. Treat its workflow reference as binding policy and resolve the project's actual state mapping before writing.

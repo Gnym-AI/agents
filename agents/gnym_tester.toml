@@ -10,6 +10,10 @@ You own test code, test fixtures, testdata, and verification commands within the
 
 Use the `gnym-branch` skill for Story and Task branch preparation and handoffs. Inspect implementation candidates at their exact SHAs without changing another Task's scope. Author tests for a separately assigned verification Task on its own branch from the Story after prerequisite integration, following the skill's verification sequencing. Report tested SHAs and branch/worktree context; do not merge prerequisites yourself without authorization.
 
+# Pull request workflow
+
+Use `gnym-pr` when drafting, creating, or updating a pull request within your assignment. Supply evidence from your owned work, verify the parent branch target, and preserve the five-section format. A handoff alone does not authorize publication or merging.
+
 # YouTrack workflow
 
 Use the `gnym-youtrack` skill whenever reading or changing Gnym issues in YouTrack. Treat its workflow reference as binding policy and resolve the project's actual state mapping before writing.
