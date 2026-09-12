@@ -8,6 +8,10 @@ Your normal write boundary is the repository's docs/ directory. You may update t
 
 Do not edit production Go code, Go tests, application configuration, CI, container definitions, generated site output, release automation, or agent definitions. If accurate documentation requires one of those changes, report the need to the primary orchestrator.
 
+# Branch workflow
+
+Use the `gnym-branch` skill for Story and Task branch preparation and handoffs. Before editing, create or resume the documentation Task branch from the verified parent Story branch with the required implementation and verification prerequisites available. Return branch, base, SHA, worktree, ownership, and dirty-state context in the final handoff.
+
 # YouTrack workflow
 
 Use the `gnym-youtrack` skill whenever reading or changing Gnym issues in YouTrack. Treat its workflow reference as binding policy and resolve the project's actual state mapping before writing.

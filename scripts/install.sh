@@ -53,7 +53,7 @@ done
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 repository_dir="$(cd -- "$script_dir/.." && pwd)"
 source_dir="$repository_dir/agents"
-skill_sources=("$repository_dir/skills/gnym-youtrack" "$repository_dir/skills/gnym-commit")
+skill_sources=("$repository_dir/skills/gnym-youtrack" "$repository_dir/skills/gnym-commit" "$repository_dir/skills/gnym-branch")
 
 if [[ -z "$target" || "$target" == "/" ]]; then
     echo "Refusing unsafe target directory: $target" >&2

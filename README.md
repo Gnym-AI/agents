@@ -18,6 +18,8 @@ The primary Codex task remains the orchestrator and the only role that communica
 
 `gnym-commit` reads the actual YouTrack ticket and formats commits as `<TICKET-ID> <TAG>: <Summary>`, with an optional blank line and at most three short bullets. This agents repository has no YouTrack project, so its commits omit the ticket prefix. Tags are `FEATURE`, `BUGFIX`, `REFACTOR`, `PERF`, `DOCS`, `TEST`, `CHORE`, and `REVERT`.
 
+`gnym-branch` defines the delivery hierarchy: Story branches start from `main`, and each Task branch starts from its parent Story. All five roles reference the skill while preserving read-only planning and roadmapping.
+
 ## Workflow
 
 See [workflow/orchestration.md](workflow/orchestration.md) for responsibilities, handoffs, revision rules, and completion behavior.
@@ -40,7 +42,7 @@ Preview the operation without writing:
 
     ./scripts/install.sh --dry-run
 
-The installer validates and installs both the Gnym agent TOML files and the shared YouTrack and commit skills. It installs missing definitions, leaves identical copies unchanged, and refuses to overwrite a different installed copy. After reviewing an intentional difference, use:
+The installer validates and installs both the Gnym agent TOML files and the shared YouTrack, commit, and branching skills. It installs missing definitions, leaves identical copies unchanged, and refuses to overwrite a different installed copy. After reviewing an intentional difference, use:
 
     ./scripts/install.sh --force
 

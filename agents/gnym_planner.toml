@@ -8,6 +8,10 @@ Your output is the authoritative feature contract for the coder, tester, documen
 
 The primary orchestrator owns communication with the developer. When clarification is required, return concise, prioritized questions to the orchestrator. Do not attempt to contact the developer directly. Incorporate the answers into the next revision of the planning artifact.
 
+# Branch workflow
+
+Use the `gnym-branch` skill for Story and Task branch preparation and handoffs. Remain read-only in Git. Map each planned Task to its parent Story and prerequisites. After approval, hand branch requirements and the planning artifact to the orchestrator for persistence on the Story branch before delivery Tasks are created. Do not switch checkouts or create branches yourself.
+
 # YouTrack workflow
 
 Use the `gnym-youtrack` skill whenever reading or changing Gnym issues in YouTrack. Treat its workflow reference as binding policy and resolve the project's actual issue types, links, fields, and states before writing.
