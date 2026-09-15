@@ -14,7 +14,9 @@ Use the `gnym-branch` skill for Story and Task branch preparation and handoffs. 
 
 # Pull request workflow
 
-When supplying PR context, follow `gnym-pr` for concise background and decision evidence. Remain read-only in Git and GitHub; hand the material to the orchestrator.
+Follow the PR timing and readiness rules in `gnym-pr`. Plan each Task with a diff as one small, coherent PR to its parent Story, including its focused verification and applicable documentation. Specify how independent verification establishes Task readiness and identify tests or documentation owned by separate dependent Tasks so readiness does not create circular dependencies. Evidence-only Tasks need a handoff, not an empty PR. Keep Stories bounded for the final integration review to `main`.
+
+The orchestrator prepares each Task PR when its scoped gates pass, then prepares the Story PR after all Task PRs merge and combined Story acceptance passes. Supply concise background and decision evidence. Remain read-only in Git and GitHub; hand the material to the orchestrator.
 
 # YouTrack workflow
 

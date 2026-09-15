@@ -20,7 +20,7 @@ The primary Codex task remains the orchestrator and the only role that communica
 
 `gnym-branch` defines the delivery hierarchy: Story branches start from `main`, and each Task branch starts from its parent Story. All five roles reference the skill while preserving read-only planning and roadmapping.
 
-`gnym-pr` formats pull requests with Summary, Background, What changed, Testing approach, and Future wisdom. Task PRs target their parent Story branch; Story PRs target `main`. Descriptions explain the final change and testing evidence concisely.
+`gnym-pr` formats pull requests with Summary, Background, What changed, Testing approach, and Future wisdom. Task PRs target their parent Story branch; Story PRs target `main`. The orchestrator prepares each Task PR after scoped independent verification and applicable documentation, then prepares the Story PR after all Task PRs merge and combined Story acceptance passes. Task PRs are the primary implementation review boundary; Story PRs cover integration. Descriptions explain the final change and testing evidence concisely. Publication and merging follow existing authorization.
 
 ## Workflow
 

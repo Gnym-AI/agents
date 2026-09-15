@@ -14,7 +14,8 @@ The primary Codex task acts as orchestrator. It controls developer communication
 8. The coder implements the assignment, performs focused verification, and returns an implementation report.
 9. The tester independently maps the implementation to the approved criteria, adds or strengthens test evidence, and returns a verification report.
 10. The documenter updates Gnym's docs/ content from the approved intent and verified final behavior.
-11. The orchestrator confirms that the implementation, testing, and documentation satisfy the approved feature contract.
+11. For each Task, the orchestrator confirms scoped verification and documentation readiness and prepares its PR to the parent Story using `gnym-pr`. Repeat delivery and PR review per Task; do not wait for all Story work to finish. Publish and merge under existing authorization, verifying integration before starting dependent Task branches.
+12. After all Task PRs are merged, the orchestrator verifies the combined Story, confirms implementation, testing, and documentation satisfy the approved contract, and prepares the Story PR to `main`. Report Story readiness separately from actual integration into `main`.
 
 The roadmapper is optional when the developer already presents one bounded feature.
 
@@ -24,9 +25,9 @@ All roles follow `gnym-branch`. The orchestrator owns Story branch preparation a
 
 Independent testing may inspect an implementation candidate before integration. Edits for a separate verification Task start from the Story after prerequisites are integrated; the orchestrator coordinates that dependency and verifies the final integrated Story.
 
-## Pull request descriptions
+## Pull request timing and descriptions
 
-Use `gnym-pr` to prepare and publish PRs when authorized. Task PRs target their parent Story branch; Story PRs target `main`. Use the verified ticket and change tag in the title, with the ticket-free exception for `gnym-agents`. Every body uses Summary, Background, What changed, Testing approach, and Future wisdom. Agents contribute evidence from their owned work; the orchestrator coordinates publication and integration. Creating a PR does not authorize merging it.
+Follow the PR timing and readiness rules in `gnym-pr`: the orchestrator prepares a PR at each Task completion boundary after scoped gates pass, then a Story integration PR after all Task PRs merge and combined acceptance passes. Evidence-only Tasks return handoffs without empty PRs. Dependent verification or documentation Tasks remain explicit Story acceptance requirements; they must not cause a circular wait for the prerequisite Task merge. Prepare the review material automatically and publish when authorized. Task PRs target their parent Story branch; Story PRs target `main`. Use the verified ticket and change tag in the title, with the ticket-free exception for `gnym-agents`. Every body uses Summary, Background, What changed, Testing approach, and Future wisdom. Agents contribute evidence from their owned work; the orchestrator coordinates publication and integration. Creating a PR does not authorize merging it.
 
 ## YouTrack progression
 
@@ -60,7 +61,7 @@ Each handoff identifies:
 - Story/Task branch names, intended base and base SHA, current HEAD, worktree path and owner, prerequisite status, and uncommitted changes;
 - completed outcomes;
 - files owned or changed;
-- evidence collected;
+- evidence collected, tested SHA, scoped PR readiness, documentation disposition, and pending dependent Tasks;
 - deviations from the approved plan;
 - assumptions, risks, and blockers;
 - consequences for the next specialist.

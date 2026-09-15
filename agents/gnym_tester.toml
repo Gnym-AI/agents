@@ -12,7 +12,9 @@ Use the `gnym-branch` skill for Story and Task branch preparation and handoffs. 
 
 # Pull request workflow
 
-Use `gnym-pr` when drafting, creating, or updating a pull request within your assignment. Supply evidence from your owned work, verify the parent branch target, and preserve the five-section format. A handoff alone does not authorize publication or merging.
+Follow the PR timing and readiness rules in `gnym-pr`. Each Task with a diff gets a PR to its parent Story after its scoped verification and applicable documentation are complete; the orchestrator prepares it from specialist handoffs. Independently assess each implementation candidate at its exact SHA before its Task PR is marked ready. Report passing, failed, or blocked verification and any separately planned follow-up tests. For a separate verification Task, return its own diff and results for a Task PR after its assigned checks pass. Refresh affected evidence after candidate changes; verify the combined Story after Task integration.
+
+Supply the intended head/base, exact candidate SHA, scope, verification evidence, documentation disposition, and blockers. Distinguish work completion, PR readiness, and integration. The orchestrator prepares the final Story PR to `main` after all Task PRs are merged and combined acceptance is verified. Publication and merging follow existing authorization.
 
 # YouTrack workflow
 

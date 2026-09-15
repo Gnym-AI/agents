@@ -21,6 +21,16 @@ Use `gnym-branch` to verify the originating parent branch. The user's term "sour
 
 Compare the head against the verified base using the PR's merge-base diff. Inspect unexpected unrelated changes before publishing. There is no arbitrary PR size limit or mandatory split based on line count; preserve the Story/Task scope and make the explanation readable within ten minutes.
 
+## PR timing and readiness
+
+Each Task with a committed diff is the primary PR review boundary. The orchestrator prepares its title, body, head, base, and reviewed diff as soon as the Task's implementation, independent verification, and applicable documentation are complete. Do not wait for the whole Story or combine separate Tasks merely to reduce PR count. Evidence-only Tasks without a diff return a handoff; do not create empty PRs.
+
+Readiness is scoped to the approved Task. A tester can independently inspect and check the implementation candidate at its exact SHA before integration. Tests or documentation explicitly assigned to dependent Tasks remain tracked prerequisites for Story acceptance; name them in the Task PR and do not claim they are complete. Do not wait for a downstream Task that can only branch after this Task is merged. Required checks for the current Task must pass; failed or blocked verification is not ready for review. Same-Task testing and documentation edits stay on that Task branch, with affected verification refreshed after changes.
+
+After all Task PRs are merged into the Story, the orchestrator verifies the combined Story against its acceptance criteria and required integration checks, confirms documentation is complete, and prepares the Story PR to `main`. Task PRs carry detailed implementation review; the Story PR links those reviews and focuses on combined behavior, acceptance evidence, compatibility, and remaining risks. Local Task completion, PR readiness, merge into the Story, and integration into `main` are distinct states.
+
+Prepare PR material as part of delivery without waiting for a separate drafting request. Publish or update the remote PR when existing authorization covers that operation; otherwise return the prepared material for approval. Reuse existing authorization and PRs. PR readiness does not grant merge authorization.
+
 ## Title
 
 Follow `gnym-commit` for the exact ticket ID, tag definitions, and concise changelog-style summary:
