@@ -38,7 +38,7 @@ All roles use the shared `gnym-youtrack` skill for issue operations. The configu
 - The coder advances its implementation Task from active work to an evidence-backed handoff.
 - The tester independently records verification and advances verified work toward documentation.
 - The documenter records canonical documentation changes and advances work to final review.
-- The orchestrator resolves loops and performs final Story closure.
+- The orchestrator resolves loops, keeps the Story delivery map and affected Task status summaries current, and performs final Story closure. Each completed Task receives its own closing summary with verification and integration evidence and any remaining Story work.
 
 Each agent pushes status only across its own boundary. No specialist declares the next specialist's work complete.
 
@@ -52,6 +52,12 @@ Each agent pushes status only across its own boundary. No specialist declares th
 - A material change to approved behavior requires a recorded planning revision and renewed developer approval.
 
 Specialist agents do not privately redefine the feature contract.
+
+## Human-readable YouTrack records
+
+Follow the description, progress, and closure rules in `gnym-youtrack/references/workflow.md`. The planner gives each Task enough context to understand its purpose, acceptance conditions, dependencies, and contribution to its linked Story without reading the plan. The Story carries a compact delivery map of its linked Tasks. Specialists maintain their own current-status summaries; the orchestrator reconciles cross-Task progress and verified integration. Before final Story acceptance, check each child for a closing summary consistent with its actual state. Explain remaining Story work even when a Task is Done, and report Story-branch integration separately from main integration.
+
+Keep the detailed specialist handoff below available for execution, but translate it into concise outcome-first prose for YouTrack.
 
 ## Handoff contract
 

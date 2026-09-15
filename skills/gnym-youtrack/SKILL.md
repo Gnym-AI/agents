@@ -28,7 +28,7 @@ Before creating, editing, linking, commenting, changing state, or performing a b
 - Documenter owns documentation updates.
 - Orchestrator owns developer communication, conflict resolution, cross-agent progression, and final closure.
 - Agents may push work only through their authorized transition; they do not declare downstream work complete.
-- Descriptions hold current canonical intent. Comments hold append-only progress, evidence, questions, handoffs, and deviations.
+- Descriptions explain purpose, place in the parent Story, acceptance, and current status in plain language. Comments hold append-only progress and evidence. Follow the human-readable description and closure rules in the workflow reference; plan identifiers alone are insufficient.
 - Search for an existing matching issue before creating another.
 - Read current issue state immediately before mutating it.
 - Never overwrite newer or unrelated human or agent changes.

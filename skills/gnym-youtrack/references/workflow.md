@@ -218,19 +218,41 @@ Comments are append-only records of:
 
 Do not use comments to create a second, conflicting feature contract.
 
-Use this compact handoff comment shape:
+## Human-readable task descriptions
 
-    Agent: <role>
-    Plan: <path or link>#<revision>
-    Scope: <task and acceptance identifiers>
-    Outcome: <completed or observed result>
-    Evidence: <commands, tests, files, or links>
-    Status: <resulting workflow state>
-    Deviations: <none or concise list>
-    Blockers: <none or owner and required action>
-    Next: <next role and expected action>
+A reader must understand the Task without opening the plan or reconstructing comments. Use concise prose and these sections, omitting only genuinely inapplicable details:
 
-Omit fields that genuinely do not apply, but always identify role, outcome, resulting state, blockers, and next action.
+- **Purpose:** What changes and why the parent Story needs it.
+- **Place in the Story:** Link the parent by ID and title; explain this Task's contribution, prerequisites, and what it enables. Link related Tasks by ID and a short description. Do not imply a linear sequence when work can run independently.
+- **Scope:** Included behavior and important exclusions in plain language.
+- **Acceptance:** A short list of observable completion conditions. Summarize the relevant approved criteria; retain T/AC/VR identifiers as secondary traceability, never as a substitute for explaining them.
+- **Current status:** Actual configured state, what is complete, what remains, blocker and responsible role if any, and the next action. Distinguish implementation, independent verification, integration into the Story, and integration into main. Report unknown integration status as unknown.
+- **References:** Approved plan path/link and revision, and relevant evidence or PR links.
+
+The repository plan remains the detailed contract. These summaries must agree with it and must not introduce new scope. The planner writes the initial description; the assigned specialist may maintain its current-status section within its authorized boundary. The orchestrator maintains cross-Task integration and closure status. Preserve other authors' content and reread before edits.
+
+## Human-readable progress and closure
+
+Lead each meaningful update with the result and what it means for the Story. Use ordinary sentences; avoid a wall of Agent/Plan/Scope metadata. Include:
+
+- what changed or was learned;
+- the actual workflow state and any remaining work or blocker;
+- the next responsible role and action, with linked Tasks where relevant;
+- concise verification evidence and the exact candidate/tested commit when needed for traceability.
+
+Keep commands, detailed test matrices, numeric edge cases, and branch/worktree ownership in the specialist handoff or linked repository evidence. Include technical detail in the ticket when it explains a defect, decision, or limitation. Identify the acting role briefly because connector comments may share one account.
+
+At a meaningful transition, update the Task's current-status section and append a concise comment. Record evidence and intended transition first, apply the authorized state change, then reread and synchronize the description with the confirmed state. Never describe an attempted transition as successful. If any part fails, report the partial result and reconcile it without duplicating successful comments.
+
+The role authorized to mark a Task Done must leave a closing comment on that Task and refresh its current-status section. State the accepted outcome, verification result with a direct evidence link, confirmed integration destination/PR/commit where applicable, and remaining Story work. A parent closure comment alone does not close the communication loop. The orchestrator checks every child Task at Story acceptance and repairs missing closure summaries within that Story's authorized scope.
+
+For example, an implementation Task awaiting independent testing could say:
+
+> Implementation is complete and integrated into the parent Story branch. Independent verification is pending in [GNY-12 — Verify the schema and pipeline](https://gnym.youtrack.cloud/issue/GNY-12). This provides the shared result format needed by the pipeline integration Task. The tester owns the next step. This is not yet integrated into main.
+
+Use examples as writing guidance, not as current evidence or mandatory wording. Only report integration or verification after checking the relevant result.
+
+A Task may be complete for its approved scope while the Story still needs dependent testing, documentation, or main integration. Name those remaining steps explicitly. Do not change completion gates or hold prerequisite integration for dependent Tasks merely to make status wording simpler.
 
 ## Planner-created tasks
 
@@ -240,7 +262,7 @@ After plan approval, create only Tasks needed for the approved feature:
 - one independent verification Task;
 - one documentation Task when documentation impact is not explicitly none.
 
-Each Task must link to its Story and identify the relevant plan revision. Use the plan's stable T, AC, and VR identifiers rather than duplicating the entire plan.
+Each Task must link to its Story and identify the relevant plan revision. Follow the human-readable description requirements above, retaining the plan's stable T, AC, and VR identifiers in References. After creating the Tasks, add a compact delivery map to the Story: linked Task, contribution, prerequisites, current state, and next step. The orchestrator refreshes this map at meaningful delivery transitions and final acceptance using verified child states.
 
 Do not assign a coding Task that depends on an unresolved product decision. Do not create speculative Tasks for deferred work.
 
