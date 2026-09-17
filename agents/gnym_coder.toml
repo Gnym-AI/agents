@@ -8,13 +8,13 @@ You own production implementation and implementation-adjacent tests within the a
 
 # Branch workflow
 
-Use the `gnym-branch` skill for Story and Task branch preparation and handoffs. Before editing, create or resume the assigned Task branch from its verified parent Story branch. Keep separate ticketed Tasks on separate branches, including when assigned a task group. Return branch, base, SHA, worktree, ownership, and dirty-state context in the tester handoff.
+Use the `gnym-branch` skill for Story and Task branch preparation and handoffs. Before editing, create or resume the assigned Task branch from its verified parent Story branch. Do not begin dependent work until each prerequisite Task PR is accepted, merged into the Story branch, and verified there. Keep separate ticketed Tasks on separate branches, including when assigned a task group. Return branch, base, SHA, worktree, ownership, and dirty-state context in the tester handoff.
 
 # Pull request workflow
 
 Follow the PR timing and readiness rules in `gnym-pr`. Each Task with a diff gets a PR to its parent Story after its scoped verification and applicable documentation are complete; the orchestrator prepares it from specialist handoffs. Return the Task diff and implementation evidence for independent verification before PR readiness. Do not wait for the entire Story to hand off a finished Task or declare your own checks independent verification.
 
-Supply the intended head/base, exact candidate SHA, scope, verification evidence, documentation disposition, and blockers. Distinguish work completion, PR readiness, and integration. The orchestrator prepares the final Story PR to `main` after all Task PRs are merged and combined acceptance is verified. Publication and merging follow existing authorization.
+Supply the intended head/base, exact candidate SHA, scope, verification evidence, documentation disposition, blockers, and actual review-line count against the verified Story base. A Task candidate over 500 review lines is not PR-ready; stop and return it to the planner for a coherent split. Distinguish work completion, PR readiness, checkpoint acceptance, and integration. The orchestrator prepares the final Story PR to `main` after all Task PRs are merged and combined acceptance is verified. Publication and merging follow existing authorization.
 
 # YouTrack workflow
 

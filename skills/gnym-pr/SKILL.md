@@ -19,7 +19,11 @@ Use `gnym-branch` to verify the originating parent branch. The user's term "sour
 - `gnym-agents` has no YouTrack project. Omit the ticket prefix there and verify the originating base from branch context or explicit user instructions. Do not invent a ticket or assume a missing parent.
 - If the parent is missing, ambiguous, or deleted, resolve it with the orchestrator or user before publication. Do not silently retarget to `main` or recreate a deleted parent.
 
-Compare the head against the verified base using the PR's merge-base diff. Inspect unexpected unrelated changes before publishing. There is no arbitrary PR size limit or mandatory split based on line count; preserve the Story/Task scope and make the explanation readable within ten minutes.
+Compare the head against the verified base using the PR's merge-base diff. Inspect unexpected unrelated changes before publishing.
+
+For a Task PR, calculate its review-line count from that merge-base diff by summing every numeric addition and deletion reported by `git diff --numstat`. Count all textual files, including tests, documentation, generated files, and lockfiles. Report binary entries separately because they do not have a meaningful line count. A Task PR must contain no more than 500 review lines. If it exceeds the limit, do not publish it or describe it as PR-ready; return it to the planner for a coherent split. Do not hide files from the count or mechanically split an inseparable outcome merely to pass the gate.
+
+Story PRs are minor-release integration reviews and have no line-count limit. Their bodies must link the accepted Task PRs that comprise the release and identify any direct Story-branch changes. Direct Story-branch product changes bypass the Task review boundary and must be resolved before Story PR readiness.
 
 ## PR timing and readiness
 
@@ -30,6 +34,16 @@ Readiness is scoped to the approved Task. A tester can independently inspect and
 After all Task PRs are merged into the Story, the orchestrator verifies the combined Story against its acceptance criteria and required integration checks, confirms documentation is complete, and prepares the Story PR to `main`. Task PRs carry detailed implementation review; the Story PR links those reviews and focuses on combined behavior, acceptance evidence, compatibility, and remaining risks. Local Task completion, PR readiness, merge into the Story, and integration into `main` are distinct states.
 
 Prepare PR material as part of delivery without waiting for a separate drafting request. Publish or update the remote PR when existing authorization covers that operation; otherwise return the prepared material for approval. Reuse existing authorization and PRs. PR readiness does not grant merge authorization.
+
+## Task PR checkpoint
+
+A published Task PR is a delivery checkpoint. Work that depends on its changes must wait until the checkpoint is accepted, the PR is merged into the parent Story branch, and that integration is verified. Independent Tasks may continue.
+
+- Accepted and merged: refresh the Story branch, verify the prerequisite there, and then release dependent work.
+- Changes requested: return the same Task to active work and keep dependent work blocked while the PR is revised and reverified.
+- Rejected: close the PR unmerged, move the Task to the configured `Rejected` state through `gnym-youtrack`, update the Story delivery map, and keep dependent work blocked until the planner supplies any required revision and approval.
+
+PR publication is not Task acceptance or completion. Do not mark the Task Done until the accepted PR is merged into the Story branch and the resulting integration is verified. Automated transitions from GitHub review comments are deferred; do not infer a workflow transition from arbitrary comment text.
 
 ## Title
 
@@ -88,6 +102,6 @@ A request to draft produces a title and body only. A request to create or update
 
 Use the configured GitHub integration or available CLI. Check for an existing PR for the same repository and head branch before creating a duplicate. Read its current title, body, base, and state before updating; preserve relevant human edits and refresh stale claims around the final scope. Resolve conflicting base information before retargeting an existing PR.
 
-Always provide explicit head and base branches. With `gh`, pass the body through `--body-file` to preserve Markdown and avoid shell interpolation. Verify the returned PR's URL, title, body, head, and base after creation or update. Report the URL and `head → base`, plus any incomplete step. Do not report success from a draft file alone.
+Always provide explicit head and base branches. With `gh`, pass the body through `--body-file` to preserve Markdown and avoid shell interpolation. For a Task PR, report and recheck the review-line count against the published head and base. Verify the returned PR's URL, title, body, head, base, state, and line-count gate after creation or update. Report the URL and `head → base`, plus any incomplete step. Do not report success from a draft file alone.
 
 Creating a PR does not authorize merging it, enabling auto-merge, deleting branches, requesting reviewers, or closing/changing YouTrack issues. Integration and final acceptance remain with the orchestrator/developer under their existing authorization.

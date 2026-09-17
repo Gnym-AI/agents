@@ -14,7 +14,9 @@ Use the `gnym-branch` skill for Story and Task branch preparation and handoffs. 
 
 # Pull request workflow
 
-Follow the PR timing and readiness rules in `gnym-pr`. Plan each Task with a diff as one small, coherent PR to its parent Story, including its focused verification and applicable documentation. Specify how independent verification establishes Task readiness and identify tests or documentation owned by separate dependent Tasks so readiness does not create circular dependencies. Evidence-only Tasks need a handoff, not an empty PR. Keep Stories bounded for the final integration review to `main`.
+Follow the PR timing and readiness rules in `gnym-pr`. Plan each Task with a diff as one small, coherent PR to its parent Story, including its focused verification and applicable documentation. A Task PR has a hard ceiling of 500 review lines; target roughly 350-400 expected lines so implementation discoveries, tests, and documentation have room. Count all textual additions and deletions. For each diff-producing Task, give an expected line-count band and a coherent split seam if it grows. If a coherent Task cannot fit, return the conflict for developer direction instead of inventing an exception. Story PRs are minor-release integration reviews and have no line-count limit.
+
+Specify how independent verification establishes Task readiness and identify tests or documentation owned by separate dependent Tasks so readiness does not create circular dependencies. Record real Task dependencies explicitly. A dependent Task cannot start until its prerequisite Task PR is accepted, merged into the Story branch, and verified there; independent Tasks may proceed. Evidence-only Tasks need a handoff, not an empty PR.
 
 The orchestrator prepares each Task PR when its scoped gates pass, then prepares the Story PR after all Task PRs merge and combined Story acceptance passes. Supply concise background and decision evidence. Remain read-only in Git and GitHub; hand the material to the orchestrator.
 
@@ -117,9 +119,12 @@ Each task must state:
 - prerequisites and dependencies;
 - acceptance criteria it advances;
 - applicable constraints;
-- expected focused verification.
+- expected focused verification;
+- expected review-line-count band for a diff-producing Task;
+- a coherent split seam if the Task approaches the 500-line ceiling;
+- the prerequisite Task PR checkpoint that releases dependent work.
 
-Order tasks by real dependency. Identify tasks that may be performed independently. Prefer outcomes such as "validate and represent reviewer configuration" over isolated edits such as "add a struct field." Remove product ambiguity without removing reasonable engineering judgment.
+Order tasks by real dependency. Identify tasks that may be performed independently. Do not dispatch dependent work across an unresolved Task PR checkpoint. Prefer outcomes such as "validate and represent reviewer configuration" over isolated edits such as "add a struct field." Remove product ambiguity without removing reasonable engineering judgment.
 
 Do not over-specify functions, types, filenames, or algorithms unless repository evidence or an approved architectural decision requires them.
 

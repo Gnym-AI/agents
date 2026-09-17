@@ -91,6 +91,8 @@ Recommended Task progression:
 4. Verified
 5. Done
 
+Rejected is a terminal Task disposition for work the developer or orchestrator explicitly declines after an artifact or implementation exists. When the configured `Rejected` state is available, every rejected Task must move there. Do not use Rejected for ordinary review feedback, failed verification that should return to implementation, or work that was accepted and later reverted.
+
 Blocked may be used from any active state when the configured workflow supports it. A blocked transition requires a comment naming the blocker, owner, consequence, and smallest action needed to resume.
 
 These are semantic stages, not an instruction to manufacture every state. If the configured project combines stages, preserve the same ownership and evidence in comments.
@@ -146,7 +148,7 @@ May advance the Story to the final review state when one exists. Must not mark u
 
 Coordinates assignments and agent loops, relays developer decisions, resolves ownership conflicts, and performs final closure after implementation, independent verification, and required documentation are complete.
 
-Only the orchestrator or developer closes the Story unless the developer later authorizes a different rule.
+Only the orchestrator or developer closes the Story unless the developer later authorizes a different rule. After a developer rejection decision, the orchestrator owns the cross-system disposition: close the unmerged PR, move the Task to the configured `Rejected` state, synchronize its current status, and update the Story delivery map.
 
 ## Authorization model
 
@@ -167,6 +169,7 @@ The following require explicit developer or orchestrator authorization:
 - changing issue types or parent relationships outside an approved plan;
 - bulk creation or batch edits beyond the specifically approved feature;
 - reopening or closing a Story outside the normal evidence-based workflow.
+- rejecting a Task, closing its PR, or starting replacement work outside an already explicit rejection decision.
 
 The following always require explicit developer authorization:
 
@@ -231,6 +234,8 @@ A reader must understand the Task without opening the plan or reconstructing com
 
 The repository plan remains the detailed contract. These summaries must agree with it and must not introduce new scope. The planner writes the initial description; the assigned specialist may maintain its current-status section within its authorized boundary. The orchestrator maintains cross-Task integration and closure status. Preserve other authors' content and reread before edits.
 
+For dependent work, the Place in the Story and Current status sections must name the prerequisite Task PR checkpoint. A dependent Task remains blocked until that PR is accepted, merged into the Story branch, and its integration is verified. A pending, changes-requested, or rejected prerequisite does not release dependent work. Independent Tasks may continue.
+
 ## Human-readable progress and closure
 
 Lead each meaningful update with the result and what it means for the Story. Use ordinary sentences; avoid a wall of Agent/Plan/Scope metadata. Include:
@@ -254,6 +259,22 @@ Use examples as writing guidance, not as current evidence or mandatory wording. 
 
 A Task may be complete for its approved scope while the Story still needs dependent testing, documentation, or main integration. Name those remaining steps explicitly. Do not change completion gates or hold prerequisite integration for dependent Tasks merely to make status wording simpler.
 
+## Rejected Task disposition
+
+Rejecting work preserves the record; it does not delete the ticket, branch, commits, comments, or PR. Before mutation, verify the exact Task, Story, PR, head and base branches, merge state, candidate SHA, configured `Rejected` state, and dependent Tasks.
+
+For an unmerged rejection:
+
+1. Record the rejection reason and intended effect on the PR, then close it without merging.
+2. Add an append-only Task comment naming the rejected outcome, PR, final candidate SHA, accepted portions if any, Story consequence, dependencies now blocked, and next owner.
+3. Move the Task to `Rejected`; never leave rejected work in Done, Verified, or Handoff Ready.
+4. Refresh the Task's Current status and the Story delivery map from the confirmed results.
+5. Preserve the branch and commits unless the developer separately authorizes deletion.
+
+If the change already reached the Story branch or `main`, do not move the original accepted Task to Rejected or rewrite shared history. Create an approved linked rollback Task and deliver a `REVERT` commit through the normal Task PR checkpoint. Link the original and reversal records.
+
+Replacement work uses a new Task and branch. If rejection changes approved scope, observable behavior, acceptance, or dependencies, the planner records a plan revision and obtains the required approval before the replacement is created or dispatched. GitHub comment-driven state changes are deferred and must not be inferred from arbitrary comment text.
+
 ## Planner-created tasks
 
 After plan approval, create only Tasks needed for the approved feature:
@@ -262,7 +283,7 @@ After plan approval, create only Tasks needed for the approved feature:
 - one independent verification Task;
 - one documentation Task when documentation impact is not explicitly none.
 
-Each Task must link to its Story and identify the relevant plan revision. Follow the human-readable description requirements above, retaining the plan's stable T, AC, and VR identifiers in References. After creating the Tasks, add a compact delivery map to the Story: linked Task, contribution, prerequisites, current state, and next step. The orchestrator refreshes this map at meaningful delivery transitions and final acceptance using verified child states.
+Each Task must link to its Story and identify the relevant plan revision. Follow the human-readable description requirements above, retaining the plan's stable T, AC, and VR identifiers in References. For a diff-producing Task, include its expected review-line-count band and prerequisite PR checkpoint. After creating the Tasks, add a compact delivery map to the Story: linked Task, contribution, prerequisites, checkpoint, current state, and next step. The orchestrator refreshes this map at meaningful delivery transitions and final acceptance using verified child states.
 
 Do not assign a coding Task that depends on an unresolved product decision. Do not create speculative Tasks for deferred work.
 
@@ -271,6 +292,8 @@ Do not assign a coding Task that depends on an unresolved product decision. Do n
 If the MCP connection or required YouTrack capability is unavailable, do not claim the issue was changed. Return the intended operation and blocker.
 
 If a field, issue type, link, or state is missing, do not create project configuration. Report the conceptual value needed and wait for the developer to configure or map it.
+
+If a rejection is requested but the configured `Rejected` Task state is unavailable, do not substitute Done, Blocked, or another terminal state. Stop before cross-system mutation and report the missing configuration.
 
 If a transition fails after a comment succeeds, report the partial result explicitly. Do not duplicate the comment on retry.
 
